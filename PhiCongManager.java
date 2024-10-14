@@ -267,5 +267,27 @@ public class PhiCongManager {
             System.out.println("Lỗi khi đọc thông tin phi công: " + e.getMessage());
         }
     }
+    public PhiCong timPhiCongTheoMa(int maPhiCong) {
+        for (PhiCong phiCong : phiCongList) {
+            if (phiCong.getMaPhiCong() == maPhiCong) {
+                return phiCong; // Tìm thấy phi công
+            }
+        }
+        return null; // Không tìm thấy
+    }
 
+
+
+
+
+
+
+    /*public void showPhiCongByChuyenBay(int maChuyenBay) {
+        // Giả sử bạn có một danh sách phi công
+        for (PhiCong phiCong : phiCongList) {
+            if (phiCong.getMaChuyenBay() == maChuyenBay) {
+                System.out.println(phiCong.toString());
+            }
+        }
+    }*/
 }
