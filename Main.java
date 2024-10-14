@@ -1,22 +1,19 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import entity.HanhKhach;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import service.ChuyenBayManager;
+import service.HanhKhachManager;
 import service.PhiCongManager;
 import service.TiepVienManager;
 
 
 
 
+
 public class Main {
     public static void main(String[] args) {
-        try (FileWriter writer = new FileWriter("output.txt")) {
-            writer.write("Lê Văn Liêm\n");
-            writer.write("Liêm Văn Lê\n");
-            System.out.println("Ghi vào tệp thành công.");
-        } catch (IOException e) {
-            System.out.println("Lỗi ghi tệp: " + e.getMessage());
-        }
+
+        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         login();
     }
@@ -25,7 +22,7 @@ public class Main {
 
 
     public static void login() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
         String username = "admin";
         String password = "123";
         String inputUsername;
@@ -48,14 +45,15 @@ public class Main {
     }
 
     public static void showMenu() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
         int choice;
 
         do {
             System.out.println("\n=== Menu chính ===");
             System.out.println("1. Quản lý chuyến bay");
             System.out.println("2. Quản lý phi công");
-            System.out.println("3. Quản lý tiếp viên"); // Thêm chức năng quản lý tiếp viên
+            System.out.println("3. Quản lý tiếp viên");
+            System.out.println("4. Quản lý khách hàng");
             System.out.println("0. Thoát");
 
             System.out.print("Nhập lựa chọn của bạn: ");
@@ -69,7 +67,10 @@ public class Main {
                     quanlyphicong();
                     break;
                 case 3:
-                    quanlytiepvien(); // Gọi hàm quản lý tiếp viên
+                    quanlytiepvien();
+                    break;
+                case 4:
+                    quanlykhachhang();
                     break;
                 case 0:
                     System.out.println("Thoát chương trình.");
@@ -85,7 +86,7 @@ public class Main {
 
     public static void quanlychuyenbay() {
         ChuyenBayManager chuyenBayManager = new ChuyenBayManager();
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
         int choice;
 
         do {
@@ -119,7 +120,7 @@ public class Main {
 
     public static void quanlyphicong() {
         PhiCongManager phiCongManager = new PhiCongManager();
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
         int choice;
 
         do {
@@ -157,7 +158,7 @@ public class Main {
 
     public static void quanlytiepvien() {
         TiepVienManager tiepVienManager = new TiepVienManager();
-        Scanner sc = new Scanner(System.in);
+        Scanner sc= new Scanner(System.in, StandardCharsets.UTF_8);
         int choice;
 
         do {
@@ -192,6 +193,68 @@ public class Main {
             }
         } while (choice != 0);
     }
+
+
+    public static void quanlykhachhang() {
+        HanhKhachManager hanhKhachManager = new HanhKhachManager();
+        Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
+        int choice;
+
+        do {
+            System.out.println("\n=== Menu Quản lý Khách Hàng ===");
+            System.out.println("1. Hiển thị khách hàng");
+            System.out.println("2. Thêm khách hàng");
+            System.out.println("3. Chỉnh sửa khách hàng");
+            System.out.println("4. Xóa khách hàng");
+            System.out.println("0. Quay lại menu chính");
+
+            System.out.print("Nhập lựa chọn của bạn: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    hanhKhachManager.showHanhKhach();
+                    break;
+                case 2:
+                    // Thêm khách hàng
+                    System.out.print("Nhập mã khách hàng: ");
+                    int maKhachHang = sc.nextInt();
+                    sc.nextLine(); // Đọc dòng còn lại
+                    System.out.print("Nhập tên khách hàng: ");
+                    String tenKhachHang = sc.nextLine();
+                    System.out.print("Nhập số điện thoại: ");
+                    String soDienThoai = sc.nextLine();
+                    System.out.print("Nhập địa chỉ: ");
+                    String diaChi = sc.nextLine();
+                    System.out.print("Nhập mã chuyến bay: ");
+                    int maChuyenBay = sc.nextInt();
+                    System.out.print("Nhập mã vé: ");
+                    int maVe = sc.nextInt();
+
+                    HanhKhach hanhKhach = new HanhKhach(maKhachHang, tenKhachHang, soDienThoai, diaChi, maChuyenBay, maVe);
+                    hanhKhachManager.addHanhKhach(hanhKhach);
+                    break;
+                case 3:
+                    // Chỉnh sửa khách hàng
+                    System.out.print("Nhập mã khách hàng cần chỉnh sửa: ");
+                    int maKhachHangEdit = sc.nextInt();
+                    hanhKhachManager.editHanhKhach(maKhachHangEdit);
+                    break;
+                case 4:
+                    // Xóa khách hàng
+                    System.out.print("Nhập mã khách hàng cần xóa: ");
+                    int maKhachHangDelete = sc.nextInt();
+                    hanhKhachManager.deleteHanhKhach(maKhachHangDelete);
+                    break;
+                case 0:
+                    System.out.println("Quay lại menu chính.");
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ. Vui lòng thử lại.");
+            }
+        } while (choice != 0);
+    }
+
 
 
 
