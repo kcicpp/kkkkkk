@@ -26,6 +26,9 @@ public class ChuyenBay {
         this.soGhe = soGhe;
     }
 
+    public ChuyenBay(int maChuyenBay, String ngayGioBay, String diemDen, String gioDiChuyen, int soGhe, List<PhiCong> selectedPilots, List<TiepVien> selectedAttendants) {
+    }
+
     public int getMaChuyenBay() {
         return maChuyenBay;
     }
@@ -93,6 +96,8 @@ public class ChuyenBay {
     }
 
     // Phương thức hiển thị thông tin chuyến bay
+
+
     public void displayChuyenBayInfo() {
         System.out.println("Mã chuyến bay: " + maChuyenBay +
                 ", Ngày giờ bay: " + ngayGioBay +
