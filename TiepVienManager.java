@@ -1,6 +1,7 @@
 package service;
 
 import entity.TiepVien;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.io.*;
 import java.util.ArrayList;
@@ -45,7 +46,13 @@ public class TiepVienManager {
                 System.out.print("Nhập mã tiếp viên: ");
                 maTiepVien = scanner.nextInt();
                 scanner.nextLine(); // Đọc dòng còn lại
-                break;
+
+                // Kiểm tra mã có bị trùng lặp không
+                if (timTiepVienTheoMa(maTiepVien) != null) {
+                    System.out.println("Mã tiếp viên đã tồn tại. Vui lòng nhập mã khác.");
+                } else {
+                    break; // Thoát khỏi vòng lặp nếu mã không trùng
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Mã tiếp viên phải là một số nguyên. Vui lòng nhập lại.");
                 scanner.nextLine(); // Xóa dữ liệu lỗi còn lại trong scanner
@@ -120,13 +127,7 @@ public class TiepVienManager {
             }
         }
 
-        TiepVien found = null;
-        for (TiepVien tiepVien : tiepVienList) {
-            if (tiepVien.getMaTiepVien() == maTiepVien) {
-                found = tiepVien;
-                break;
-            }
-        }
+        TiepVien found = timTiepVienTheoMa(maTiepVien);
 
         if (found != null) {
             // Chỉnh sửa thông tin tiếp viên
@@ -163,13 +164,7 @@ public class TiepVienManager {
             }
         }
 
-        TiepVien found = null;
-        for (TiepVien tiepVien : tiepVienList) {
-            if (tiepVien.getMaTiepVien() == maTiepVien) {
-                found = tiepVien;
-                break;
-            }
-        }
+        TiepVien found = timTiepVienTheoMa(maTiepVien);
 
         if (found != null) {
             tiepVienList.remove(found);
@@ -178,6 +173,15 @@ public class TiepVienManager {
         } else {
             System.out.println("Không tìm thấy tiếp viên với mã đã nhập.");
         }
+    }
+
+    public TiepVien timTiepVienTheoMa(int maTiepVien) {
+        for (TiepVien tiepVien : tiepVienList) {
+            if (tiepVien.getMaTiepVien() == maTiepVien) {
+                return tiepVien; // Tìm thấy tiếp viên
+            }
+        }
+        return null; // Không tìm thấy
     }
 
     private void writeTiepVienToFile() {
